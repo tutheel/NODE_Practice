@@ -135,7 +135,7 @@ const fileOps = async () => {
     //append
     await fsPromise.appendFile(
       path.join(__dirname, "files", "promisedWrite.txt"),
-      "\n\n Nice to meet you"
+      "\nNice to meet you"
     );
     console.log("Append Complete");
 
@@ -145,6 +145,13 @@ const fileOps = async () => {
       path.join(__dirname, "files", "renamePromisedWrite.txt")
     );
     console.log("Rename Complete");
+
+    //Reading new Data again
+    const newData = await fsPromise.readFile(
+      path.join(__dirname, "files", "renamePromisedWrite.txt"),
+      "utf-8"
+    );
+    console.log(newData);
   } catch (error) {
     console.error(error);
   }
