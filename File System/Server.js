@@ -125,6 +125,10 @@ const fileOps = async () => {
     );
     console.log(data);
 
+    //Delete File
+    await fsPromise.unlink(path.join(__dirname, "files", "Starter.txt"));
+    console.log("file delete complete");
+
     //write new file
     await fsPromise.writeFile(
       path.join(__dirname, "files", "promisedWrite.txt"),
