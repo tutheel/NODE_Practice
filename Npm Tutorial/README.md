@@ -85,3 +85,54 @@ Copy code
 - Project Metadata: It provides basic information like the project name, author, license, and more.
 
 In short, npm init sets up the foundation for managing your Node.js project, making it easier to handle dependencies, scripts, and versioning.
+
+# Versioning in `package.json`
+
+In Node.js, the `package.json` file uses specific symbols to define how package versions are managed. Here's a quick guide:
+
+### Version Symbols
+
+- **^ (Caret Symbol)**  
+  Example: `^3.6.0`
+
+  - Allows updates to **minor** and **patch** versions.
+  - **Avoids upgrading to major versions**, preventing breaking changes.
+  - Example: Versions like `3.6.x` or `3.x.x` are allowed, but `4.0.0` is not.
+
+- **~ (Tilde Symbol)**  
+  Example: `~3.6.0`
+
+  - Allows updates to **patch** versions only.
+  - **Avoids upgrading to both major and minor versions**.
+  - Example: Versions like `3.6.x` are allowed, but `3.7.x` or `4.x.x` are not.
+
+- **\* (Asterisk Symbol)**  
+  Example: `*`
+  - Upgrades to the **latest version available**.
+  - **Not recommended** as it may introduce breaking changes with major updates.
+
+### Best Practices
+
+- Use `^` for flexible but safe updates (minor and patch).
+- Use `~` for more control, allowing only patch updates.
+- Avoid using `*` to prevent unintended breaking changes.
+
+For more details on semantic versioning, check out the [npm documentation](https://docs.npmjs.com/about-semantic-versioning).
+
+### Update your Packages with latest patch
+
+```bash
+npm update
+
+//OR
+npm update YOUR_PACKGE_NAME
+```
+
+### Remove Package
+
+```bash
+npm rm
+
+//OR
+npm rm YOUR_PACKGE_NAME
+```

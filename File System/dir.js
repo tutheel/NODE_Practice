@@ -18,6 +18,6 @@ const fs = require("fs");
 if (fs.existsSync("./files/newDir")) {
   fs.rmdir("./files/newDir", err => {
     if (err) throw err;
-    console.log("Directory removed");
+    console.log("Directory Removed");
   });
 }
