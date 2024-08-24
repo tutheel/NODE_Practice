@@ -1,15 +1,33 @@
 const express = require('express')
 const app = express();
 const path = require('path');
-const logEvents = require('./middleware/logEvents')
+const cors = require('cors')
+const errorHandler= require('./middleware/errorHandler')
+const {logger} = require('./middleware/logEvents')
 const PORT = process.env.PORT || 3500;
 
 //writting your custome middleware
-app.use((req,res,next)=>{
-    logEvents(`${req.method}\t${req.headers.origin}\t${req.url}`,'reqLog.txt')
-    console.log(`${req.method} ${req.path}`)
-    next();
-})
+app.use(logger)
+
+// // Enable CORS for all routes - CORS= cross origin resource Sharing
+// app.use(cors());
+
+///******* OR ********/
+const whiteList = ["http://localhost:3500","https://www.YOURrrWebsite.com","http://www.google.com"]
+const corsOption = {
+    origin:(origin,callback)=>{
+        //|| !origin
+        if(whiteList.indexOf(origin)!== -1 || !origin ){
+            callback(null,true)
+        }else{
+            callback(new Error('Not Allowed by CORS'))
+        }
+
+    },
+    optionsSuccessStatus:200
+}
+app.use(cors(corsOption));
+
 
 //built in middleware to handle urlencoded data
 app.use(express.urlencoded({extended:false}))
@@ -51,8 +69,18 @@ const three = (req,res)=>{
 app.get('/chain(.html)?',[one,two,three])
 
 //setting a status Code
-app.get('/*',(req,res)=>{
-    res.status(404).sendFile(path.join(__dirname,"views","404.html"))
-    
+//app.use('/')
+app.all('*',(req,res)=>{
+    if(req.accepts('html')){
+        res.status(404).sendFile(path.join(__dirname,"views","404.html"))
+    }
+    //throw error when you get a json request
+    if(req.accepts('json')){
+        res.json({error:'404 Not Found'})
+    }
 })
+
+//server error
+app.use(errorHandler)
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
